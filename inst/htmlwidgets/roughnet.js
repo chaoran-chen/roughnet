@@ -222,7 +222,7 @@ HTMLWidgets.widget({
       renderValue: function(x) {
 
         var div = document.createElement("div");
-        var textContent = document.createTextNode("Hallo");
+        var textContent = document.createTextNode(JSON.stringify({"sdf":2}));
         div.appendChild(textContent);
         el.appendChild(div);
 
