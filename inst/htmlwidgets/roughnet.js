@@ -1,5 +1,5 @@
 function drawRect(rc, s) {
-   rc.rectangle(Number(s.x), Number(s.y), Number(s.size), Number(s.size), {
+   return rc.rectangle(Number(s.x), Number(s.y), Number(s.size), Number(s.size), {
      roughness: s.roughness,
      bowing: s.bowing,
      fill: s.fill,
@@ -12,7 +12,7 @@ function drawRect(rc, s) {
 }
 
 function drawCirc(rc, s) {
-   rc.circle(Number(s.x), Number(s.y), Number(s.size), {
+   return rc.circle(Number(s.x), Number(s.y), Number(s.size), {
      roughness: s.roughness,
      bowing: s.bowing,
      fill: s.fill,
@@ -174,7 +174,7 @@ function drawAir(rc,ctx,s){
 
 
 function drawEdge(rc, s) {
-   rc.line(Number(s.x), Number(s.y), Number(s.xend),Number(s.yend),{
+   return rc.line(Number(s.x), Number(s.y), Number(s.xend),Number(s.yend),{
      roughness: s.roughness,
      bowing: s.bowing,
      stroke: s.color,
@@ -210,6 +210,12 @@ function drawText(rc,ctx,s) {
   }
 }
 
+const HTMLWidgets = {
+  widget: ({name, type, factory}) => {
+    factory(null, 960, 600).renderValue(data);
+  }
+};
+
 HTMLWidgets.widget({
 
   name: 'roughnet',
@@ -221,32 +227,21 @@ HTMLWidgets.widget({
     return {
       renderValue: function(x) {
 
-        var div = document.createElement("div");
-        var textContent = document.createTextNode(JSON.stringify(x.data));
-        div.appendChild(textContent);
-        el.appendChild(div);
-
-        // Create Canvas element in DOM
-        var canvas = document.createElement("canvas");
-        canvas.setAttribute("id", "canvas");
-        canvas.setAttribute("width", width);
-        canvas.setAttribute("height", height);
-        el.appendChild(canvas);
-
+        const svg = document.getElementById('svg');
         // Insert rough canvas in the new canvas element
-        const rc = rough.canvas(document.getElementById("canvas"));
+        const rc = rough.svg(svg);
 
         // Create context for text shape
-        const c = document.getElementById("canvas");
-        var ctx = c.getContext("2d");
-        ctx.font = x.font;
+        //const c = document.getElementById("svg");
+        //var ctx = c.getContext("2d");
+        //ctx.font = x.font;
 
         x.data.map(function(s) {
           if (s.shape === "rectangle") {
-            drawRect(rc, s);
+            svg.appendChild(drawRect(rc, s));
           }
           if(s.shape === "circle"){
-            drawCirc(rc,s);
+            svg.appendChild(drawCirc(rc,s));
           }
           if(s.shape==="heart"){
             drawHeart(rc,ctx,s);
@@ -265,7 +260,7 @@ HTMLWidgets.widget({
           }
 
           if(s.shape === "edge"){
-            drawEdge(rc,s);
+            svg.appendChild(drawEdge(rc,s));
           }
 
           if(s.shape === "text"){
