@@ -221,7 +221,9 @@ HTMLWidgets.widget({
     return {
       renderValue: function(x) {
 
-
+        var div = document.createElement("div");
+        var newContent = document.createTextNode(JSON.stringify(x));
+        el.appendChild(canvas);
 
         // Create Canvas element in DOM
         var canvas = document.createElement("canvas");
