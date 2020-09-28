@@ -221,7 +221,7 @@ HTMLWidgets.widget({
     return {
       renderValue: function(x) {
 
-        console.log(x);
+
 
         // Create Canvas element in DOM
         var canvas = document.createElement("canvas");
